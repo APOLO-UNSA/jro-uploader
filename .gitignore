@@ -1,0 +1,14 @@
+# Ignorar archivos compilados de Python
+__pycache__/
+*.pyc
+
+# Ignorar la librería interna (se debe descargar manualmente en cada server)
+jrodb_lib/
+
+# Ignorar archivos de sistema o logs
+.DS_Store
+historial.txt
+
+# Ignorar entornos virtuales locales
+venv/
+env/
