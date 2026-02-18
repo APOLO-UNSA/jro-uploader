@@ -20,5 +20,12 @@ Para construir y desplegar este servicio necesitas:
 
 ### 1. Clonar el Repositorio
 ```bash
-git clone git@github.com:APOLO-UNSA/jro-uploader.git
-cd jro-uploader.
+$ git clone git@github.com:APOLO-UNSA/jro-uploader.git
+$ cd jro-uploader.
+
+
+
+
+
+
+sigo aqui F
