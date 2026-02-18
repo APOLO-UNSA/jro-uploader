@@ -2,7 +2,7 @@
 
 Este es un servicio automatizado dockerizado diseñado para el **Radio Observatorio de Jicamarca (JRO)**. Su función principal es monitorear un directorio local en busca de nuevas imágenes y subirlas automáticamente a la base de datos CKAN del instituto.
 
-El servicio está construido en **Python 3.8.16** y utiliza una arquitectura de contenedor ligero p
+El servicio está construido en **Python 3.8.16** y utiliza una arquitectura de contenedor ligero 
 ---
 
 ## 📋 Requisitos Previos
