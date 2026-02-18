@@ -22,10 +22,80 @@ Para construir y desplegar este servicio necesitas:
 ```bash
 $ git clone git@github.com:APOLO-UNSA/jro-uploader.git
 $ cd jro-uploader.
+```
+### ⚙️ 2. Variables de Entorno (Configuración)
 
+El contenedor se configura mediante variables de entorno. Es indispensable definir la API KEY y la Zona Horaria para el correcto funcionamiento.
+| Variable | Descripción | Valor por Defecto |
+| :--- | :--- | :--- |
+| `JRO_API_KEY` | **(Obligatorio)** Clave de acceso. | *Ninguno* (Tendrás que colocar el tuyo)|
+| `TZ` | Zona horaria del contenedor. | `UTC` |
+| `JRO_API_URL` | URL del jro database | url al repositorio |
+| `JRO_DATASET_ID` | ID del dataset | ID del dataset 2025 esf (cambiar para el deseado)|
 
+### 🚀 3. Ejecución del Contenedor
 
+Para iniciar el servicio en segundo plano (-d) con reinicio automático (unless-stopped), utiliza el siguiente comando.
 
+    Nota: Reemplaza /ruta/real/de/imagenes con la ruta absoluta donde se guardan las fotos en tu servidor.
 
+```bash
 
-sigo aqui F
+docker run -d \
+  --name uploader-servicio \
+  --restart unless-stopped \
+  -e TZ=America/Lima \
+  -e JRO_API_KEY="TU_CLAVE_API_AQUI" \
+  -v /ruta/real/de/imagenes:/data/images \
+  jro-uploader:v1
+```
+
+### 📊 4. Comandos de Monitoreo y Mantenimiento
+
+Comandos útiles para gestionar el ciclo de vida del servicio:
+🔍 Ver estado del servicio
+
+Verifica si el contenedor está Up (corriendo) o Restarting (en bucle de error).
+```Bash
+docker ps -a
+```
+## 📜 Consultar Logs en tiempo real
+
+Muestra las últimas 50 líneas y se queda esperando nuevos eventos. Útil para ver qué archivos se están subiendo.
+```Bash
+
+docker logs -f --tail 50 uploader-servicio
+```
+(Presiona Ctrl + C para salir de la vista de logs)
+
+## 📈 Verificar consumo de recursos
+
+Revisa cuánta memoria RAM y CPU está consumiendo el proceso.
+```Bash
+
+docker stats uploader-servicio --no-stream
+```
+## 🔄 Reiniciar el servicio
+
+Úsalo si cambiaste la configuración, la red se cayó, o el servicio se quedó pegado.
+```Bash
+
+docker restart uploader-servicio
+```
+## 🛑 Detener y Eliminar
+
+Para apagar el servicio completamente. Esto borra el contenedor pero NO borra la imagen ni tus datos.
+```Bash
+
+docker stop uploader-servicio
+docker rm uploader-servicio
+```
+## 📂 Estructura del Proyecto
+
+    app.py: Script principal de Python (lógica de subida y schedule).
+
+    Dockerfile: Configuración de la imagen del sistema operativo.
+
+    requirements.txt: Lista de dependencias (incluye librería interna del IGP via git+https).
+
+    .gitignore: Archivos excluidos del repositorio por seguridad.
