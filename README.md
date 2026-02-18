@@ -21,4 +21,5 @@ Para construir y desplegar este servicio necesitas:
 ### 1. Clonar el Repositorio
 ```bash
 git clone git@github.com:APOLO-UNSA/jro-uploader.git
-cd jro-uploader
+cd jro-uploader.
+### 2. Crear un maldito comentario
