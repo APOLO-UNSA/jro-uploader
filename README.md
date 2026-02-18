@@ -29,7 +29,7 @@ El contenedor se configura mediante variables de entorno. Es indispensable defin
 | Variable | Descripción | Valor por Defecto |
 | :--- | :--- | :--- |
 | `JRO_API_KEY` | **(Obligatorio)** Clave de acceso. | *Ninguno* (Tendrás que colocar el tuyo)|
-| `TZ` | Zona horaria del contenedor. | `UTC` |
+| `TZ` | Zona horaria del contenedor. | `UTC` (cambiar al de lima, Perú)|
 | `JRO_API_URL` | URL del jro database | url al repositorio |
 | `JRO_DATASET_ID` | ID del dataset | ID del dataset 2025 esf (cambiar para el deseado)|
 
@@ -37,7 +37,7 @@ El contenedor se configura mediante variables de entorno. Es indispensable defin
 
 Para iniciar el servicio en segundo plano (-d) con reinicio automático (unless-stopped), utiliza el siguiente comando.
 
-    Nota: Reemplaza /ruta/real/de/imagenes con la ruta absoluta donde se guardan las fotos en tu servidor.
+*Nota: Reemplaza /ruta/real/de/imagenes con la ruta absoluta donde se guardan las fotos en tu servidor.*
 
 ```bash
 
@@ -45,6 +45,7 @@ docker run -d \
   --name uploader-servicio \
   --restart unless-stopped \
   -e TZ=America/Lima \
+  -e JRO_DATASET_ID="id_del_dataset" \
   -e JRO_API_KEY="TU_CLAVE_API_AQUI" \
   -v /ruta/real/de/imagenes:/data/images \
   jro-uploader:v1
@@ -92,10 +93,9 @@ docker rm uploader-servicio
 ```
 ## 📂 Estructura del Proyecto
 
-    app.py: Script principal de Python (lógica de subida y schedule).
-
-    Dockerfile: Configuración de la imagen del sistema operativo.
-
-    requirements.txt: Lista de dependencias (incluye librería interna del IGP via git+https).
-
-    .gitignore: Archivos excluidos del repositorio por seguridad.
+```text
+ckan
+├── docker-entrypoint.d
+│   └── setup_validation.sh
+├── Dockerfile
+└── Dockerfile.dev
