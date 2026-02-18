@@ -93,9 +93,10 @@ docker rm uploader-servicio
 ```
 ## 📂 Estructura del Proyecto
 
-```text
-ckan
-├── docker-entrypoint.d
-│   └── setup_validation.sh
-├── Dockerfile
-└── Dockerfile.dev
+app.py: Script principal de Python (lógica de subida y schedule).
+
+Dockerfile: Configuración de la imagen del sistema operativo.
+
+requirements.txt: Lista de dependencias (incluye librería interna del IGP via git+https).
+
+.gitignore: Archivos excluidos del repositorio por seguridad.
