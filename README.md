@@ -10,9 +10,9 @@ El servicio está construido en **Python 3.8.16** y utiliza una arquitectura de 
 Para construir y desplegar este servicio necesitas:
 
 1.  **Docker** instalado en el servidor.
-2.  **Acceso a la Intranet del IGP**: ⚠️ **CRÍTICO**.
+2.  **Acceso a la Intranet del IGP**: 
     * El archivo `requirements.txt` descarga la librería `jrodb_lib` directamente desde el repositorio interno (`intranet.igp.gob.pe`).
-    * Si intentas construir la imagen (`docker build`) desde una red externa (como tu casa) sin VPN, **fallará**.
+    * Si intentas construir la imagen (`docker build`) desde una red externa no funcionará
 
 ---
 
