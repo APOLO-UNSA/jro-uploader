@@ -21,10 +21,11 @@ def main():
     requirements = os.path.join(base_dir, "requirements_GUI.txt")
     gui_script = os.path.join(base_dir, "gui_app.py")
     
-    # Intentar localizar el icono (buscamos en api1 o en la carpeta actual)
-    icon_path = "/home/igp-172/Documents/api1/IGP.jpg"
+    # Localizar el icono dentro del repositorio (portable)
+    icon_path = os.path.join(base_dir, "IGP.jpg")
     if not os.path.exists(icon_path):
-        icon_path = os.path.join(base_dir, "IGP.jpg") # Por si se movió al repo
+        # Fallback por si acaso
+        icon_path = "utilities-terminal"
 
     print(f"--- 🛠️ Instalador Automático de JRO Uploader GUI ---")
     print(f"Carpeta del proyecto: {base_dir}")
