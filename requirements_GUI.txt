@@ -1,0 +1,13 @@
+certifi==2026.2.25
+charset-normalizer==3.4.4
+ckanapi==4.7
+docopt==0.6.2
+idna==3.11
+jrodb @ git+https://intranet.igp.gob.pe/jicamarca/rhodecode/DATABASES/ckanext-jro/api-cliente@7969fa062c2fc1da28ef0f4bc836d96107cfc362
+python-slugify==8.0.4
+requests==2.32.4
+schedule==1.2.2
+six==1.17.0
+text-unidecode==1.3
+tqdm==4.67.3
+urllib3==2.2.3
