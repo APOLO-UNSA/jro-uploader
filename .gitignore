@@ -11,4 +11,5 @@ historial.txt
 
 # Ignorar entornos virtuales locales
 venv/
-env/
+env/.venv_gui/
+.venv_gui/
