@@ -1,103 +1,77 @@
-# 📡 JRO Data Uploader Service
+# 📡 JRO Data Uploader Suite
 
-Este es un servicio automatizado dockerizado diseñado para el **Radio Observatorio de Jicamarca (JRO)**. Su función principal es monitorear un directorio local en busca de nuevas imágenes y subirlas automáticamente a la base de datos CKAN del instituto.
-
-El servicio está construido en **Python 3.8.16** y utiliza una arquitectura de contenedor ligero 
----
-
-## 📋 Requisitos Previos
-
-Para construir y desplegar este servicio necesitas:
-
-1.  **Docker** instalado en el servidor.
-2.  **Acceso a la Intranet del IGP**: 
-    * El archivo `requirements.txt` descarga la librería `jrodb_lib` directamente desde el repositorio interno (`intranet.igp.gob.pe`).
-    * Si intentas construir la imagen (`docker build`) desde una red externa no funcionará
+Este repositorio contiene las herramientas oficiales para la gestión de datos en el **Radio Observatorio de Jicamarca (JRO)**. Incluye un servicio automatizado (Docker) y una aplicación de escritorio (GUI) para la carga manual y mantenimiento de recursos en el portal CKAN.
 
 ---
 
-## ⚙️ Instalación y Despliegue
+## 🖥️ JRO Uploader Desktop (GUI)
 
-### 1. Clonar el Repositorio
+La aplicación de escritorio permite a los investigadores gestionar los datos de forma visual e interactiva.
+
+### ✨ Funcionalidades
+*   **Selección Manual:** Elige archivos específicos (uno o varios) para subir al dataset.
+*   **Descripción Personalizada:** Al subir archivos, puedes escribir una nota técnica que se combinará automáticamente con la fecha del archivo.
+*   **Limpieza de Datos:**
+    *   **Eliminar Seleccionados:** Busca y borra permanentemente archivos del servidor basándose en la lista local.
+    *   **Vaciar Dataset:** Elimina todos los recursos de un dataset de forma masiva (con confirmación de seguridad).
+*   **Log en tiempo real:** Consola integrada para monitorear el éxito o error de cada fase (Subida, Patch de Notas, Vistas).
+
+### ⚙️ Instalación Local (Linux)
+Para ejecutar la aplicación de escritorio fuera de Docker, configura un entorno virtual:
+
 ```bash
-$ git clone https://github.com/APOLO-UNSA/jro-uploader.git
-$ cd jro-uploader.
+# Crear entorno virtual
+python3 -m venv .venv_gui
+source .venv_gui/bin/activate
+
+# Instalar dependencias (Requiere conexión a la Intranet del IGP)
+pip install -r requirements.txt
 ```
-### ⚙️ 2. Variables de Entorno (Configuración)
 
-El contenedor se configura mediante variables de entorno. Es indispensable definir la API KEY y la Zona Horaria para el correcto funcionamiento.
-| Variable | Descripción | Valor por Defecto |
-| :--- | :--- | :--- |
-| `JRO_API_KEY` | **(Obligatorio)** Clave de acceso. | *Ninguno* (Tendrás que colocar el tuyo)|
-| `TZ` | Zona horaria del contenedor. | `UTC` (cambiar al de lima, Perú)|
-| `JRO_API_URL` | URL del jro database | url al repositorio |
-| `JRO_DATASET_ID` | ID del dataset | ID del dataset 2025 esf (cambiar para el deseado)|
-
-### 🚀 3. Ejecución del Contenedor
-
-Para iniciar el servicio en segundo plano (-d) con reinicio automático (unless-stopped), utiliza el siguiente comando.
-
-*Nota: Reemplaza /ruta/real/de/imagenes con la ruta absoluta donde se guardan las fotos en tu servidor.*
-
+### 🚀 Ejecución
 ```bash
+# Activar y ejecutar
+./.venv_gui/bin/python3 gui_app.py
+```
 
+*Nota: Puedes usar el archivo `JRO_Uploader.desktop` para crear un acceso directo en tu escritorio de Ubuntu.*
+
+---
+
+## 🐋 JRO Uploader Service (Docker)
+
+Servicio diseñado para correr en servidores de forma ininterrumpida, monitoreando carpetas en busca de nuevas imágenes RTI.
+
+### 📋 Requisitos Previos
+1.  **Docker** instalado.
+2.  **Acceso a la Intranet del IGP** (Necesario para descargar la librería `jrodb`).
+
+### ⚙️ Configuración (Variables de Entorno)
+| Variable | Descripción |
+| :--- | :--- |
+| `JRO_API_KEY` | Clave de acceso secreta de CKAN. |
+| `JRO_API_URL` | URL del repositorio (IGP Database). |
+| `JRO_DATASET_ID` | ID único del dataset (UUID). |
+
+### 🚀 Despliegue Rápido
+```bash
 docker run -d \
   --name uploader-servicio \
   --restart unless-stopped \
   -e TZ=America/Lima \
-  -e JRO_DATASET_ID="id_del_dataset" \
-  -e JRO_API_KEY="TU_CLAVE_API_AQUI" \
-  -v /ruta/real/de/imagenes:/data/images \
-  -v $(pwd)/app.py:/app/app.py \
+  -e JRO_API_KEY="TU_CLAVE" \
+  -e JRO_DATASET_ID="ID_DEL_DATASET" \
+  -v /ruta/imagenes:/data/images \
   jro-uploader:v1
 ```
 
-### 📊 4. Comandos de Monitoreo y Mantenimiento
+---
 
-Comandos útiles para gestionar el ciclo de vida del servicio:
-🔍 Ver estado del servicio
-
-Verifica si el contenedor está Up (corriendo) o Restarting (en bucle de error).
-```Bash
-docker ps -a
-```
-## 📜 Consultar Logs en tiempo real
-
-Muestra las últimas 50 líneas y se queda esperando nuevos eventos. Útil para ver qué archivos se están subiendo.
-```Bash
-
-docker logs -f --tail 50 uploader-servicio
-```
-(Presiona Ctrl + C para salir de la vista de logs)
-
-## 📈 Verificar consumo de recursos
-
-Revisa cuánta memoria RAM y CPU está consumiendo el proceso.
-```Bash
-
-docker stats uploader-servicio --no-stream
-```
-## 🔄 Reiniciar el servicio
-
-Úsalo si cambiaste la configuración, la red se cayó, o el servicio se quedó pegado.
-```Bash
-
-docker restart uploader-servicio
-```
-## 🛑 Detener y Eliminar
-
-Para apagar el servicio completamente. Esto borra el contenedor pero NO borra la imagen ni tus datos.
-```Bash
-
-docker stop uploader-servicio
-docker rm uploader-servicio
-```
 ## 📂 Estructura del Proyecto
+*   `app.py`: Lógica del servicio automático (background).
+*   `gui_app.py`: Lógica de la aplicación interactiva (desktop).
+*   `Dockerfile`: Configuración para despliegue en contenedores.
+*   `requirements.txt`: Dependencias del sistema y librerías internas del IGP.
 
-app.py: Script principal de Python (lógica de subida y schedule).
-
-Dockerfile: Configuración de la imagen del sistema operativo.
-
-requirements.txt: Lista de dependencias (incluye librería interna del IGP via git+https).
-
-.gitignore: Archivos excluidos del repositorio por seguridad.
+---
+© 2026 Radio Observatorio de Jicamarca - Instituto Geofísico del Perú.
