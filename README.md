@@ -48,6 +48,7 @@ docker run -d \
   -e JRO_DATASET_ID="id_del_dataset" \
   -e JRO_API_KEY="TU_CLAVE_API_AQUI" \
   -v /ruta/real/de/imagenes:/data/images \
+  -v $(pwd)/app.py:/app/app.py \
   jro-uploader:v1
 ```
 
