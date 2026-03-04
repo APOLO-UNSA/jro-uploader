@@ -25,16 +25,17 @@ python3 -m venv .venv_gui
 source .venv_gui/bin/activate
 
 # Instalar dependencias (Requiere conexión a la Intranet del IGP)
-pip install -r requirements.txt
+pip install -r requirements_GUI.txt
 ```
 
 ### 🚀 Ejecución
 ```bash
 # Activar y ejecutar
+./.venv_gui/bin/python3 install_gui.py
 ./.venv_gui/bin/python3 gui_app.py
 ```
 
-*Nota: Puedes usar el archivo `JRO_Uploader.desktop` para crear un acceso directo en tu escritorio de Ubuntu.*
+*Nota: Puedes usar el  `JRO_Uploader.desktop` para crear un acceso directo en tu escritorio de Ubuntu.*
 
 ---
 
