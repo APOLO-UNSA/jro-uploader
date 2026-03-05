@@ -4,6 +4,14 @@ Este repositorio contiene las herramientas oficiales para la gestión de datos e
 
 ---
 
+## 📡 Instalación
+Para instalar el Uploader Suite, ejecute los siguientes comandos:
+
+```bash
+git clone https://github.com/APOLO-UNSA/jro-uploader.git
+cd jro-uploader
+```
+
 ## 🖥️ JRO Uploader Desktop (GUI)
 
 La aplicación de escritorio permite a los investigadores gestionar los datos de forma visual e interactiva.
