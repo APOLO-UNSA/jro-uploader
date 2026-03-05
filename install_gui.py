@@ -65,8 +65,7 @@ Categories=Application;Development;
             f.write(desktop_entry)
         os.chmod(desktop_path, 0o755)
         print(f"[*] Lanzador creado en: {desktop_path}")
-        print("
---- ✅ INSTALACIÓN COMPLETADA ---")
+        print("--- ✅ INSTALACIÓN COMPLETADA ---")
         print("IMPORTANTE: Ve a tu escritorio, haz clic derecho en el icono y selecciona 'Allow Launching'.")
     except Exception as e:
         print(f"[!] Error al crear el lanzador: {e}")
